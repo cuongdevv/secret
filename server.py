@@ -29,7 +29,7 @@ username = quote_plus('cuong')
 password = quote_plus('Cuong17102006')
 
 # Tạo MongoDB URI với credentials đã được encode
-default_uri = f'mongodb+srv://P{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
+default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
 PORT = int(os.environ.get('PORT', 5000))
 
