@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const numbersList = document.querySelector('.numbers-list');
     
     // API URL - thay đổi nếu server của bạn chạy ở cổng khác
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = window.location.origin + '/api';
     
     // Store filtered numbers for copy functionality
     let uniqueNumbersArray = [];
