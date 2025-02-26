@@ -3,12 +3,31 @@ from flask_cors import CORS
 import os
 from datetime import datetime
 from pymongo import MongoClient
+from urllib.parse import quote_plus
 
 app = Flask(__name__, static_folder='.')
-CORS(app)  # Cho phép cross-origin requests
+# Cập nhật CORS cho phép GitHub Pages
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://cuongdevv.github.io",
+            "http://127.0.0.1:5000",
+            "http://localhost:5000",
+            "http://127.0.0.1:5500",
+            "https://web-production-1e4b.up.railway.app",
+            "https://cuongdevv.github.io/secret"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
-# Lấy MongoDB URI từ biến môi trường hoặc sử dụng giá trị mặc định
-MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/')
+username = quote_plus('cuong')
+password = quote_plus('x2JmIyjKV4DPhfM2')
+
+# Tạo MongoDB URI với credentials đã được encode
+default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
 PORT = int(os.environ.get('PORT', 5000))
 
 try:

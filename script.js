@@ -22,8 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabContents = document.querySelectorAll('.tab-content');
     const numbersList = document.querySelector('.numbers-list');
     
-    // API URL - thay đổi nếu server của bạn chạy ở cổng khác
-    const API_URL = window.location.origin + '/api';
+    // API URL - Tự động nhận diện môi trường
+    const hostname = window.location.hostname;
+    const API_URL = (hostname === 'localhost' || hostname === '127.0.0.1')
+        ? `http://${hostname}:5000/api`
+        : 'https://web-production-1e4b.up.railway.app/api';
     
     // Store filtered numbers for copy functionality
     let uniqueNumbersArray = [];
