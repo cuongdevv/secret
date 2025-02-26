@@ -15,10 +15,13 @@ CORS(app, resources={
             "http://localhost:5000",
             "http://127.0.0.1:5500",
             "https://web-production-1e4b.up.railway.app",
-            "https://cuongdevv.github.io/secret"
+            "https://cuongdevv.github.io/secret",
+            "http://localhost:3000"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
+        "allow_headers": ["Content-Type", "Authorization"],
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": True
     }
 })
 
@@ -26,12 +29,12 @@ username = quote_plus('cuong')
 password = quote_plus('x2JmIyjKV4DPhfM2')
 
 # Tạo MongoDB URI với credentials đã được encode và thêm SSL parameters
-default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&ssl=true&ssl_cert_reqs=CERT_NONE'
+default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority&appName=Cluster0&authSource=admin'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
 PORT = int(os.environ.get('PORT', 5000))
 
 try:
-    client = MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True)
+    client = MongoClient(MONGODB_URI)
     client.admin.command('ping')
     db = client['phone_filter_db']
     phone_collection = db['phone_numbers']
