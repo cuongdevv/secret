@@ -26,17 +26,18 @@ CORS(app, resources={
 })
 
 username = quote_plus('cuong')
-password = quote_plus('x2JmIyjKV4DPhfM2')
+password = quote_plus('Cuong17102006')
 
-# Tạo MongoDB URI với credentials đã được encode và thêm SSL parameters
-default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority&appName=Cluster0&authSource=admin'
+# Tạo MongoDB URI với credentials đã được encode
+default_uri = f'mongodb+srv://P{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
 PORT = int(os.environ.get('PORT', 5000))
 
 try:
     client = MongoClient(MONGODB_URI)
-    client.admin.command('ping')
-    db = client['phone_filter_db']
+    # Test connection
+    db = client.get_database('phone_filter_db')
+    db.command('ping')
     phone_collection = db['phone_numbers']
     phone_collection.create_index('number', unique=True)
     print("Kết nối MongoDB thành công!")
