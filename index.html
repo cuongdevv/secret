@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ Lọc Số Điện Thoại</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <h1>Phone Manager</h1>
+        <div class="server-status">
+            Trạng thái server: <span id="serverStatus" class="status-offline">Đang kết nối...</span>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="filter">Lọc Số</button>
+            <button class="tab-button" data-tab="numbers">Số Điện Thoại</button>
+            <button class="tab-button" data-tab="history">Lịch Sử</button>
+        </div>
+        
+        <div id="filterTab" class="tab-content active">
+            <div class="input-section">
+                <h2>Nhập Số Điện Thoại</h2>
+                <p>Nhập số điện thoại, mỗi số một dòng:</p>
+                <textarea id="phoneInput" rows="10" placeholder="Nhập số điện thoại tại đây..."></textarea>
+                <div class="button-group">
+                    <button id="filterButton">Lọc Số Trùng</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="result-box">
+                    <div class="result-header">
+                        <h2>Số Không Trùng</h2>
+                        <button id="copyUniqueButton" class="copy-button">Sao Chép</button>
+                    </div>
+                    <div id="uniqueNumbers" class="result-content"></div>
+                    <div class="counter">Số lượng: <span id="uniqueCount">0</span></div>
+                </div>
+                
+                <div class="result-box">
+                    <div class="result-header">
+                        <h2>Số Bị Trùng</h2>
+                        <button id="copyDuplicateButton" class="copy-button">Sao Chép</button>
+                    </div>
+                    <div id="duplicateNumbers" class="result-content"></div>
+                    <div class="counter">Số lượng: <span id="duplicateCount">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="numbersTab" class="tab-content">
+            <h2>Danh Sách Số Điện Thoại</h2>
+            <div class="numbers-header">
+                <button id="copyAllNumbersButton" class="copy-button">Sao Chép Tất Cả</button>
+                <button id="loadNumbersButton" class="primary-button">Tải Danh Sách</button>
+            </div>
+            <div class="numbers-list">
+                <!-- Danh sách số điện thoại sẽ được thêm vào đây -->
+            </div>
+            <div class="pagination">
+                <button id="prevPage" class="page-button">&lt; Trang trước</button>
+                <span class="page-info">Trang <span id="currentPage">1</span>/<span id="totalPages">1</span></span>
+                <button id="nextPage" class="page-button">Trang sau &gt;</button>
+            </div>
+        </div>
+
+        <div id="historyTab" class="tab-content">
+            <h2>Lịch Sử Lọc Số</h2>
+            <div class="history-list">
+                <!-- Danh sách các phiên lọc số sẽ được thêm vào đây -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
