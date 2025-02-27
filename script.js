@@ -712,14 +712,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Vui lòng nhập ghi chú', 'alert');
             return;
         }
-
-        // Giới hạn số lượng ghi chú
-        const maxNotes = 50;
-        console.log('Số lượng ghi chú hiện tại:', phoneNotes.length);
-        if (phoneNotes.length + numbers.length > maxNotes) {
-            showToast(`Số lượng ghi chú đã đạt giới hạn (tối đa ${maxNotes} ghi chú)`, 'alert');
-            return;
-        }
         
         let addedCount = 0;
         let updatedCount = 0;
@@ -773,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hiển thị số lượng ghi chú
         const notesCount = document.createElement('div');
         notesCount.className = 'notes-count';
-        notesCount.textContent = `Số lượng ghi chú: ${phoneNotes.length}/50`;
+        notesCount.textContent = `Số lượng ghi chú: ${phoneNotes.length}`;
 
         // Tạo container cho danh sách ghi chú
         const notesContainer = document.createElement('div');
