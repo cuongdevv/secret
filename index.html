@@ -56,8 +56,13 @@
         <div id="numbersTab" class="tab-content">
             <h2>Danh Sách Số Điện Thoại</h2>
             <div class="numbers-header">
-                <button id="copyAllNumbersButton" class="copy-button">Sao Chép Tất Cả</button>
-                <button id="loadNumbersButton" class="primary-button">Tải Danh Sách</button>
+                <div class="search-container">
+                    <input type="text" id="noteFilter" placeholder="Tìm kiếm theo ghi chú..." class="search-input">
+                </div>
+                <div class="button-group">
+                    <button id="copyAllNumbersButton" class="copy-button">Sao Chép Tất Cả</button>
+                    <button id="loadNumbersButton" class="primary-button">Tải Danh Sách</button>
+                </div>
             </div>
             <div class="numbers-list">
                 <!-- Danh sách số điện thoại sẽ được thêm vào đây -->

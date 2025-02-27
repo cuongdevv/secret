@@ -34,7 +34,7 @@ password = quote_plus(os.getenv('MONGODB_PASSWORD'))
 # Tạo MongoDB URI với credentials đã được encode
 default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
-PORT = int(os.environ.get('PORT', 10000))  # Sử dụng port 5000 cho development
+PORT = int(os.environ.get('PORT', 5000))  # Sử dụng port 5000 cho development
 
 try:
     client = MongoClient(MONGODB_URI)
@@ -123,7 +123,7 @@ def save_numbers():
 def get_numbers():
     try:
         page = int(request.args.get('page', 1))
-        per_page = 10
+        per_page = 100
         skip = (page - 1) * per_page
         
         if USE_MONGODB:

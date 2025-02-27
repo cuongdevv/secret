@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextPageButton = document.getElementById('nextPage');
     const currentPageElement = document.getElementById('currentPage');
     const totalPagesElement = document.getElementById('totalPages');
+    const noteFilterInput = document.getElementById('noteFilter');
     
     // Tab elements
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -52,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let phoneNotes = [];
     let notesCurrentPage = 1;
     let notesTotalPages = 1;
+    
+    // Store current numbers and their notes
+    let currentNumbers = [];
+    let currentNotes = [];
     
     // Create toast container
     const popupContainer = document.createElement('div');
@@ -158,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(async data => {
                 if (data.success && data.stats) {
-                    const totalPages = Math.ceil(data.stats.uniqueCount / 10); // Assuming 10 items per page
+                    const totalPages = Math.ceil(data.stats.uniqueCount / 100); // Thay đổi từ 10 thành 100
                     let allNumbers = [];
                     
                     // Show loading toast
@@ -225,6 +230,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners for notes
     addNoteButton.addEventListener('click', addPhoneNote);
     saveNotesButton.addEventListener('click', savePhoneNotes);
+    
+    // Add event listener for note filter
+    noteFilterInput.addEventListener('input', function() {
+        displayUniqueNumbers(currentNumbers);
+    });
     
     function switchTab(tabName) {
         // Update active button
@@ -318,7 +328,21 @@ document.addEventListener('DOMContentLoaded', function() {
             numbersList.innerHTML = '<p class="empty-message">Chưa có số điện thoại nào</p>';
             return;
         }
+
+        // Store current numbers for filtering
+        currentNumbers = numbers;
         
+        // Get filter value
+        const filterValue = noteFilterInput.value.toLowerCase();
+        
+        // Filter numbers based on notes
+        const filteredNumbers = filterValue 
+            ? numbers.filter(number => {
+                const note = phoneNotes.find(note => note.number === number);
+                return note && note.description.toLowerCase().includes(filterValue);
+            })
+            : numbers;
+
         // Tạo container cho các nút
         const buttonContainer = document.createElement('div');
         buttonContainer.className = 'button-container';
@@ -378,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Tạo body
         const tbody = document.createElement('tbody');
-        numbers.forEach(number => {
+        filteredNumbers.forEach(number => {
             const tr = document.createElement('tr');
             const note = phoneNotes.find(note => note.number === number);
             
@@ -740,7 +764,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Tính toán phân trang
-        const perPage = 10;
+        const perPage = 100;
         const startIndex = (notesCurrentPage - 1) * perPage;
         const endIndex = startIndex + perPage;
         const notesOnCurrentPage = phoneNotes.slice(startIndex, endIndex);

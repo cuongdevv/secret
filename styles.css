@@ -394,11 +394,36 @@ button:hover::before {
 }
 
 .numbers-header {
-    margin-bottom: 20px;
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.search-container {
+    flex: 1;
+    max-width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.search-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
 }
 
 .primary-button {
