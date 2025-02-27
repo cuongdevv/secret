@@ -23,10 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const numbersList = document.querySelector('.numbers-list');
     
     // API URL - Tự động nhận diện môi trường
-    const hostname = window.location.hostname;
-    const API_URL = (hostname === 'localhost' || hostname === '127.0.0.1')
-        ? `http://${hostname}:5000/api`
-        : 'https://web-production-1e4b.up.railway.app/api';
+    const API_URL = window.location.hostname === 'cuongdevv.github.io'
+        ? 'https://web-production-1e4b.up.railway.app/api'
+        : `http://${window.location.hostname}:5000/api`;
     
     // Store filtered numbers for copy functionality
     let uniqueNumbersArray = [];
