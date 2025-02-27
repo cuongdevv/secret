@@ -15,7 +15,7 @@ CORS(app, resources={
             "http://localhost:5000",
             "http://127.0.0.1:5500",
             "https://web-production-1e4b.up.railway.app",
-            "https://cuongdevv.github.io/secret",
+            "https://cuongdevv.github.io/secret/",
             "http://localhost:3000"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
