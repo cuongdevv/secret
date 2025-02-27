@@ -6,20 +6,14 @@ from pymongo import MongoClient
 from urllib.parse import quote_plus
 
 app = Flask(__name__, static_folder='.')
-# Cập nhật CORS cho phép GitHub Pages
+
+# Cấu hình CORS cho toàn bộ ứng dụng
 CORS(app, resources={
-    r"/api/*": {
-        "origins": [
-            "https://cuongdevv.github.io",
-            "http://127.0.0.1:5000",
-            "http://localhost:5000",
-            "http://127.0.0.1:5500",
-            "https://web-production-6b6c7.up.railway.app"
-        ],
+    r"/*": {  # Cho phép tất cả các route
+        "origins": "*",  # Cho phép tất cả các origin
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
-        "expose_headers": ["Content-Type"],
-        "supports_credentials": False
+        "expose_headers": ["Content-Type"]
     }
 })
 
@@ -29,7 +23,7 @@ password = quote_plus('Cuong17102006')
 # Tạo MongoDB URI với credentials đã được encode
 default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', 10000))  # Railway thường dùng port 10000
 
 try:
     client = MongoClient(MONGODB_URI)
