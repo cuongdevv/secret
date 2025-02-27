@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // API URL - Tự động nhận diện môi trường
     const API_URL = window.location.hostname === 'cuongdevv.github.io'
-        ? 'https://web-production-1e4b.up.railway.app/api'
+        ? 'https://web-production-6b6c7.up.railway.app/api'
         : `http://${window.location.hostname}:5000/api`;
     
     // Store filtered numbers for copy functionality

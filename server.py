@@ -14,7 +14,7 @@ CORS(app, resources={
             "http://127.0.0.1:5000",
             "http://localhost:5000",
             "http://127.0.0.1:5500",
-            "https://web-production-1e4b.up.railway.app"
+            "https://web-production-6b6c7.up.railway.app"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
