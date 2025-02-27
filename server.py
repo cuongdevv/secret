@@ -4,26 +4,37 @@ import os
 from datetime import datetime
 from pymongo import MongoClient
 from urllib.parse import quote_plus
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__, static_folder='.')
 
 # Cấu hình CORS cho toàn bộ ứng dụng
 CORS(app, resources={
     r"/*": {  # Cho phép tất cả các route
-        "origins": "*",  # Cho phép tất cả các origin
-        "methods": ["GET", "POST", "OPTIONS"],
+        "origins": [
+            "http://localhost:5500",  # Live Server
+            "http://127.0.0.1:5500",  # Live Server alternative
+            "http://localhost:5000",   # Flask development server
+            "http://127.0.0.1:5000",   # Flask development server alternative
+            "https://cuongdevv.github.io",  # GitHub Pages
+            "https://web-production-6b6c7.up.railway.app"  # Railway
+        ],
+        "methods": ["GET", "POST", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
-        "expose_headers": ["Content-Type"]
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": False  # Thêm dòng này
     }
 })
 
-username = quote_plus('cuong')
-password = quote_plus('Cuong17102006')
-
+username = quote_plus(os.getenv('MONGODB_USERNAME'))
+password = quote_plus(os.getenv('MONGODB_PASSWORD'))
 # Tạo MongoDB URI với credentials đã được encode
 default_uri = f'mongodb+srv://{username}:{password}@cluster0.rvn8m.mongodb.net/phone_filter_db?retryWrites=true&w=majority'
 MONGODB_URI = os.environ.get('MONGODB_URI', default_uri)
-PORT = int(os.environ.get('PORT', 10000))  # Railway thường dùng port 10000
+PORT = int(os.environ.get('PORT', 10000))  # Sử dụng port 5000 cho development
 
 try:
     client = MongoClient(MONGODB_URI)
@@ -31,6 +42,7 @@ try:
     db = client.get_database('phone_filter_db')
     db.command('ping')
     phone_collection = db['phone_numbers']
+    # Tạo index cho số điện thoại
     phone_collection.create_index('number', unique=True)
     print("Kết nối MongoDB thành công!")
     USE_MONGODB = True
@@ -38,10 +50,11 @@ except Exception as e:
     print(f"Lỗi kết nối MongoDB: {str(e)}")
     print("Sử dụng lưu trữ trong bộ nhớ thay thế.")
     USE_MONGODB = False
-    # Lưu trữ dữ liệu trong bộ nhớ thay vì MongoDB
+    # Lưu trữ dữ liệu trong bộ nhớ
     memory_storage = {
         'unique_numbers': [],
-        'duplicate_numbers': []
+        'duplicate_numbers': [],
+        'phone_notes': []
     }
 
 # Route để phục vụ các file tĩnh (HTML, CSS, JS)
@@ -226,6 +239,132 @@ def get_history():
                 "history": []
             })
     
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Lỗi: {str(e)}"}), 500
+
+# API để lưu số điện thoại với ghi chú
+@app.route('/api/notes/save', methods=['POST'])
+def save_phone_notes():
+    try:
+        data = request.json
+        phone_numbers = data.get('phoneNumbers', [])
+        
+        if USE_MONGODB:
+            # Cập nhật hoặc thêm mới từng số điện thoại
+            for phone in phone_numbers:
+                phone_collection.update_one(
+                    {'number': phone['number']},
+                    {
+                        '$set': {
+                            'description': phone['description'],
+                            'updated_at': datetime.now()
+                        }
+                    },
+                    upsert=True  # Tạo mới nếu chưa tồn tại
+                )
+            
+            return jsonify({"success": True, "message": "Đã lưu ghi chú thành công"})
+        else:
+            memory_storage['phone_notes'] = phone_numbers
+            return jsonify({"success": True, "message": "Đã lưu ghi chú vào bộ nhớ tạm"})
+            
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Lỗi: {str(e)}"}), 500
+
+# API để lấy danh sách số điện thoại có ghi chú
+@app.route('/api/notes', methods=['GET'])
+def get_phone_notes():
+    try:
+        if USE_MONGODB:
+            # Lấy tất cả số điện thoại có ghi chú
+            cursor = phone_collection.find(
+                {'description': {'$exists': True}},  # Chỉ lấy các số có ghi chú
+                {
+                    '_id': 0,
+                    'number': 1,
+                    'description': 1,
+                    'is_duplicate': 1
+                }
+            ).sort('updated_at', -1)
+            
+            phone_notes = list(cursor)
+            
+            return jsonify({
+                "success": True,
+                "phoneNotes": phone_notes
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "phoneNotes": memory_storage['phone_notes']
+            })
+            
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Lỗi: {str(e)}"}), 500
+
+# API để xóa ghi chú của số điện thoại
+@app.route('/api/notes/delete/<number>', methods=['DELETE'])
+def delete_phone_note(number):
+    try:
+        if USE_MONGODB:
+            # Xóa trường description của số điện thoại
+            result = phone_collection.update_one(
+                {'number': number},
+                {'$unset': {'description': "", 'updated_at': ""}}
+            )
+            if result.modified_count > 0:
+                return jsonify({"success": True, "message": "Đã xóa ghi chú thành công"})
+            else:
+                return jsonify({"success": False, "message": "Không tìm thấy số điện thoại"}), 404
+        else:
+            # Xóa trong bộ nhớ tạm
+            memory_storage['phone_notes'] = [
+                note for note in memory_storage['phone_notes'] 
+                if note['number'] != number
+            ]
+            return jsonify({"success": True, "message": "Đã xóa ghi chú thành công"})
+            
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Lỗi: {str(e)}"}), 500
+
+@app.route('/api/numbers/delete', methods=['DELETE'])
+def delete_numbers():
+    try:
+        data = request.json
+        numbers = data.get('numbers', [])
+        
+        if not numbers:
+            return jsonify({"success": False, "message": "Không có số điện thoại để xóa"}), 400
+        
+        if USE_MONGODB:
+            result = phone_collection.delete_many({
+                'number': {'$in': numbers}
+            })
+            
+            if result.deleted_count > 0:
+                return jsonify({
+                    "success": True,
+                    "message": f"Đã xóa {result.deleted_count} số điện thoại"
+                })
+            else:
+                return jsonify({
+                    "success": False,
+                    "message": "Không tìm thấy số điện thoại để xóa"
+                }), 404
+        else:
+            # Xóa trong bộ nhớ tạm
+            initial_count = len(memory_storage['unique_numbers'])
+            memory_storage['unique_numbers'] = [
+                num for num in memory_storage['unique_numbers'] 
+                if num not in numbers
+            ]
+            deleted_count = initial_count - len(memory_storage['unique_numbers'])
+            
+            return jsonify({
+                "success": True,
+                "message": f"Đã xóa {deleted_count} số điện thoại"
+            })
+            
     except Exception as e:
         return jsonify({"success": False, "message": f"Lỗi: {str(e)}"}), 500
 

@@ -456,4 +456,419 @@ button:hover::before {
 .page-info {
     font-size: 14px;
     color: #666;
+}
+
+/* Notes tab styling */
+.notes-tab {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-input-container {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    z-index: 10;
+}
+
+.notes-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.notes-count {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    color: #666;
+    text-align: right;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-item {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.note-item:hover {
+    border-color: #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.note-content {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.note-number {
+    font-weight: 500;
+    color: #333;
+}
+
+.note-description {
+    color: #666;
+    margin-top: 4px;
+    font-size: 0.9em;
+}
+
+.note-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.delete-note {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.delete-note:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.notes-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.phone-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.phone-table th,
+.phone-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.phone-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.phone-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.phone-table td:first-child,
+.phone-table th:first-child {
+    width: 50px;
+    text-align: center;
+}
+
+.delete-selected-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em;
+    border: 0px solid transparent;
+    background-color: rgba(231, 76, 60, 0.08);
+    border-radius: 0.75em;
+    transition: all 0.2s linear;
+    margin-bottom: 10px;
+    width: fit-content;
+    margin-left: 0;
+    box-shadow: none;
+}
+
+.delete-selected-button::before {
+    display: none;
+}
+
+.delete-selected-button:hover {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: inherit;
+}
+
+.delete-selected-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.delete-selected-button svg path {
+    fill: #e74c3c;
+}
+
+.delete-selected-button:hover svg path {
+    fill: #c0392b;
+}
+
+.delete-selected-button .tooltip {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Xóa các styles liên quan đến tooltip */
+.delete-selected-button .tooltiptext,
+.delete-selected-button .tooltiptext::after,
+.delete-selected-button:hover .tooltiptext {
+    display: none;
+}
+
+.number-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#selectAll {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.copy-selected-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em;
+    border: 0px solid transparent;
+    background-color: rgba(52, 152, 219, 0.08);
+    border-radius: 0.75em;
+    transition: all 0.2s linear;
+    margin-bottom: 10px;
+    width: fit-content;
+    margin-right: 8px;
+    box-shadow: none;
+}
+
+.copy-selected-button::before {
+    display: none;
+}
+
+.copy-selected-button:hover {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: inherit;
+}
+
+.copy-selected-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.copy-selected-button svg path {
+    fill: #3498db;
+}
+
+.copy-selected-button:hover svg path {
+    fill: #2980b9;
+}
+
+.copy-selected-button .tooltip {
+    display: inline-flex;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+/* Toast Messages */
+.popup-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.popup {
+  margin: 10px;
+  box-shadow: 4px 4px 10px -10px rgba(0, 0, 0, 1);
+  width: 300px;
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+  border-radius: 4px;
+  padding: 5px 0;
+  font-weight: 300;
+  animation: slideIn 0.3s ease-in-out;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.popup.hide {
+  opacity: 0;
+}
+
+.popup svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.popup-icon svg {
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.close-icon {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.close-svg {
+  cursor: pointer;
+}
+
+.close-path {
+  fill: grey;
+}
+
+/* Success Toast */
+.success-popup {
+  background-color: #edfbd8;
+  border: solid 1px #84d65a;
+}
+
+.success-icon path {
+  fill: #84d65a;
+}
+
+.success-message {
+  color: #2b641e;
+}
+
+/* Alert Toast */
+.alert-popup {
+  background-color: #fefce8;
+  border: solid 1px #facc15;
+}
+
+.alert-icon path {
+  fill: #facc15;
+}
+
+.alert-message {
+  color: #ca8a04;
+}
+
+/* Error Toast */
+.error-popup {
+  background-color: #fef2f2;
+  border: solid 1px #f87171;
+}
+
+.error-icon path {
+  fill: #f87171;
+}
+
+.error-message {
+  color: #991b1b;
+}
+
+/* Info Toast */
+.info-popup {
+  background-color: #eff6ff;
+  border: solid 1px #1d4ed8;
+}
+
+.info-icon path {
+  fill: #1d4ed8;
+}
+
+.info-message {
+  color: #1d4ed8;
+}
+
+.notes-input-section {
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.notes-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notes-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.notes-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+textarea.notes-input {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.notes-input-group button {
+    align-self: flex-end;
+    width: 150px;
+    margin-top: 10px;
+    background-color: #3498db;
+    color: white;
+}
+
+.notes-input-group button:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+.notes-input-group button::before {
+    background-color: #2980b9;
 } 

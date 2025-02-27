@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bộ Lọc Số Điện Thoại</title>
+    <link rel="icon" type="image/png" href="logo.jpg"/>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,6 +18,7 @@
         <div class="tabs">
             <button class="tab-button active" data-tab="filter">Lọc Số</button>
             <button class="tab-button" data-tab="numbers">Số Điện Thoại</button>
+            <button class="tab-button" data-tab="notes">Ghi Chú</button>
             <button class="tab-button" data-tab="history">Lịch Sử</button>
         </div>
         
@@ -64,6 +66,25 @@
                 <button id="prevPage" class="page-button">&lt; Trang trước</button>
                 <span class="page-info">Trang <span id="currentPage">1</span>/<span id="totalPages">1</span></span>
                 <button id="nextPage" class="page-button">Trang sau &gt;</button>
+            </div>
+        </div>
+
+        <div id="notesTab" class="tab-content">
+            <h2>Ghi Chú Số Điện Thoại</h2>
+            <div class="notes-input-section">
+                <div class="notes-input-group">
+                    <textarea id="phoneNumberInput" placeholder="Nhập danh sách số điện thoại, mỗi số một dòng..." class="notes-input" rows="5"></textarea>
+                    <input type="text" id="descriptionInput" placeholder="Nhập ghi chú..." class="notes-input">
+                    <button id="addNoteButton" class="primary-button">Thêm</button>
+                </div>
+            </div>
+            
+            <div class="notes-list">
+                <!-- Danh sách số điện thoại với ghi chú sẽ được thêm vào đây -->
+            </div>
+            
+            <div class="notes-actions">
+                <button id="saveNotesButton" class="primary-button">Lưu Ghi Chú</button>
             </div>
         </div>
 
